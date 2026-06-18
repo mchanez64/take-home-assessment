@@ -1,0 +1,64 @@
+name: Reusable — Run API Tests
+
+on:
+  workflow_call:
+    inputs:
+      team:
+        description: 'Team folder to run (core-team | user-journeys-team)'
+        required: true
+        type: string
+    secrets:
+      TEST_USER_EMAIL:
+        required: false
+      TEST_USER_PASSWORD:
+        required: false
+      TEST_USER_NAME:
+        required: false
+
+jobs:
+  test:
+    name: api / ${{ inputs.team }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Generate BDD spec files
+        run: npx bddgen
+
+      - name: Run API tests
+        run: npx playwright test --project=chromium .features-gen/api/${{ inputs.team }}
+        env:
+          CI: true
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-api-${{ inputs.team }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload failure artifacts
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: failures-api-${{ inputs.team }}
+          path: test-results/
+          retention-days: 7

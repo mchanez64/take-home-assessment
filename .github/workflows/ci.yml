@@ -1,0 +1,58 @@
+name: CI — Full Test Suite
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  core-team-api:
+    name: Core Team / API
+    uses: ./.github/workflows/api-tests-template.yml
+    with:
+      team: core-team
+    secrets:
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}
+
+  user-journeys-api:
+    name: User Journeys / API
+    uses: ./.github/workflows/api-tests-template.yml
+    with:
+      team: user-journeys-team
+    secrets:
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}
+
+  core-team-ui:
+    name: Core Team / UI
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    uses: ./.github/workflows/ui-tests-template.yml
+    with:
+      team: core-team
+      browser: ${{ matrix.browser }}
+    secrets:
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}
+
+  user-journeys-ui:
+    name: User Journeys / UI
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    uses: ./.github/workflows/ui-tests-template.yml
+    with:
+      team: user-journeys-team
+      browser: ${{ matrix.browser }}
+    secrets:
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}

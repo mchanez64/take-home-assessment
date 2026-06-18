@@ -1,0 +1,31 @@
+name: Core Team — UI Tests
+
+on:
+  push:
+    paths:
+      - 'features/ui/core-team/**'
+      - 'steps/ui/core-team/**'
+      - 'pages/core-team/**'
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser engine'
+        required: false
+        default: 'chromium'
+        type: choice
+        options: [chromium, firefox, webkit]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: ${{ fromJson(github.event_name == 'workflow_dispatch' && format('["{0}"]', inputs.browser) || '["chromium","firefox","webkit"]') }}
+    uses: ./.github/workflows/ui-tests-template.yml
+    with:
+      team: core-team
+      browser: ${{ matrix.browser }}
+    secrets:
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}

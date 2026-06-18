@@ -1,0 +1,19 @@
+name: Core Team — API Tests
+
+on:
+  push:
+    paths:
+      - 'features/api/core-team/**'
+      - 'steps/api/core-team/**'
+      - 'support/helpers/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    uses: ./.github/workflows/api-tests-template.yml
+    with:
+      team: core-team
+    secrets:
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}

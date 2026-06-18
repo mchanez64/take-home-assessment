@@ -1,0 +1,28 @@
+# This file is auto-generated from codeowners.yaml
+# Do not edit manually — run `npm run generate:codeowners` to regenerate
+
+# core-team
+pages/core-team/** @mchanez64
+steps/ui/core-team/** @mchanez64
+steps/api/core-team/** @mchanez64
+features/ui/core-team/** @mchanez64
+support/** @mchanez64
+test-data/** @mchanez64
+playwright.config.ts @mchanez64
+tsconfig.json @mchanez64
+package.json @mchanez64
+codeowners.yaml @mchanez64
+.github/workflows/ci.yml @mchanez64
+.github/workflows/ui-tests-template.yml @mchanez64
+.github/workflows/api-tests-template.yml @mchanez64
+.github/workflows/core-team-ui-tests.yml @mchanez64
+.github/workflows/core-team-api-tests.yml @mchanez64
+
+# user-journeys-team
+pages/user-journeys-team/** @mchanez64
+steps/ui/user-journeys-team/** @mchanez64
+steps/api/user-journeys-team/** @mchanez64
+features/ui/user-journeys-team/** @mchanez64
+features/api/user-journeys-team/** @mchanez64
+.github/workflows/user-journeys-team-ui-tests.yml @mchanez64
+.github/workflows/user-journeys-team-api-tests.yml @mchanez64

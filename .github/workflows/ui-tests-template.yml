@@ -1,0 +1,75 @@
+name: Reusable — Run UI Tests
+
+on:
+  workflow_call:
+    inputs:
+      team:
+        description: 'Team folder to run (core-team | user-journeys-team)'
+        required: true
+        type: string
+      browser:
+        description: 'Browser engine to use (chromium | firefox | webkit)'
+        required: false
+        default: 'chromium'
+        type: string
+      headed:
+        description: 'Run in headed mode'
+        required: false
+        default: 'false'
+        type: string
+    secrets:
+      TEST_USER_EMAIL:
+        required: true
+      TEST_USER_PASSWORD:
+        required: true
+      TEST_USER_NAME:
+        required: true
+
+jobs:
+  test:
+    name: ui / ${{ inputs.team }} / ${{ inputs.browser }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps ${{ inputs.browser }}
+
+      - name: Generate BDD spec files
+        run: npx bddgen
+
+      - name: Run UI tests
+        run: npx playwright test --project=${{ inputs.browser }} .features-gen/ui/${{ inputs.team }}
+        env:
+          CI: true
+          HEADED: ${{ inputs.headed }}
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-ui-${{ inputs.team }}-${{ inputs.browser }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload failure artifacts
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: failures-ui-${{ inputs.team }}-${{ inputs.browser }}
+          path: test-results/
+          retention-days: 7

@@ -1,0 +1,36 @@
+teams:
+  core-team:
+    owners:
+      - name: Marcelo Chanez
+        email: mchanez64@gmail.com
+        github: "@mchanez64"
+    paths:
+      - pages/core-team/**
+      - steps/ui/core-team/**
+      - steps/api/core-team/**
+      - features/ui/core-team/**
+      - support/**
+      - test-data/**
+      - playwright.config.ts
+      - tsconfig.json
+      - package.json
+      - codeowners.yaml
+      - .github/workflows/ci.yml
+      - .github/workflows/ui-tests-template.yml
+      - .github/workflows/api-tests-template.yml
+      - .github/workflows/core-team-ui-tests.yml
+      - .github/workflows/core-team-api-tests.yml
+
+  user-journeys-team:
+    owners:
+      - name: Marcelo Chanez
+        email: mchanez64@gmail.com
+        github: "@mchanez64"
+    paths:
+      - pages/user-journeys-team/**
+      - steps/ui/user-journeys-team/**
+      - steps/api/user-journeys-team/**
+      - features/ui/user-journeys-team/**
+      - features/api/user-journeys-team/**
+      - .github/workflows/user-journeys-team-ui-tests.yml
+      - .github/workflows/user-journeys-team-api-tests.yml

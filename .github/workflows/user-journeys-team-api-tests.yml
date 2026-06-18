@@ -1,0 +1,19 @@
+name: User Journeys Team — API Tests
+
+on:
+  push:
+    paths:
+      - 'features/api/user-journeys-team/**'
+      - 'steps/api/user-journeys-team/**'
+      - 'support/helpers/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    uses: ./.github/workflows/api-tests-template.yml
+    with:
+      team: user-journeys-team
+    secrets:
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}
