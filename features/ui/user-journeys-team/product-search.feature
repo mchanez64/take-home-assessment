@@ -1,4 +1,4 @@
-@products
+@ui @products
 Feature: Products — Search and Cart
 
   As a shopper

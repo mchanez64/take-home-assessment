@@ -203,11 +203,36 @@ playwright.config.ts       → Core Team
 Code ownership is enforced via `.github/CODEOWNERS`, generated from `codeowners.yaml`.
 
 ### Tag Strategy
-BDD tags (`@core`, `@user-journeys`, `@api`) serve multiple purposes:
-- Run one team's suite in isolation: `--grep @core`
-- Exclude unstable tests: `--grep-invert @flaky`
-- Mark smoke tests: `--grep @smoke`
-- Mark regression tests: `--grep @regression`
+
+Every feature file carries two tags: a **type tag** and a **domain tag**.
+
+| Tag | Level | Purpose |
+|---|---|---|
+| `@ui` | Type | Marks all UI / end-to-end browser tests |
+| `@api` | Type | Marks all API / HTTP-layer tests |
+| `@auth` | Domain | Auth-related scenarios (login, registration) |
+| `@products` | Domain | Products-related scenarios (search, cart, API) |
+
+The type tag (`@ui` / `@api`) is what npm scripts and CI templates use for isolation:
+
+```bash
+npm run test:api           # --grep @api  → 3 API tests, Chromium only
+npm run test:chromium      # --grep @ui   → 5 UI tests, Chromium only
+npm run test:firefox       # --grep @ui   → 5 UI tests, Firefox only
+npm run test:webkit        # --grep @ui   → 5 UI tests, WebKit only
+```
+
+Domain tags allow cross-cutting queries without touching CI config:
+
+```bash
+npx bddgen && npx playwright test --grep @auth      # login + registration only
+npx bddgen && npx playwright test --grep @products  # search, cart, and products API
+```
+
+Additional reserved tags (not yet applied):
+- `@flaky` — exclude from main pipeline via `--grep-invert @flaky`; run nightly
+- `@smoke` — critical path subset for post-deploy verification
+- `@regression` — full regression set
 
 ### Preventing Cross-Team Coupling
 - Step definitions should never import page objects from another team's folder

@@ -50,7 +50,7 @@ jobs:
         run: npx bddgen
 
       - name: Run UI tests
-        run: npx playwright test --project=${{ inputs.browser }} .features-gen/ui/${{ inputs.team }}
+        run: npx playwright test --project=${{ inputs.browser }} .features-gen/features/ui/${{ inputs.team }}
         env:
           CI: true
           HEADED: ${{ inputs.headed }}

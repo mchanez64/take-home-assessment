@@ -1,4 +1,4 @@
-@auth
+@ui @auth
 Feature: User Login
 
   As a registered user

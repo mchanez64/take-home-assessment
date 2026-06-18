@@ -4,10 +4,11 @@
   "description": "Playwright BDD test automation framework with POM design pattern",
   "scripts": {
     "test": "bddgen && playwright test",
-    "test:headed": "bddgen && playwright test --headed",
-    "test:chromium": "bddgen && playwright test --project=chromium",
-    "test:firefox": "bddgen && playwright test --project=firefox",
-    "test:webkit": "bddgen && playwright test --project=webkit",
+    "test:api": "bddgen && playwright test --project=chromium --grep @api",
+    "test:headed": "bddgen && playwright test --headed --grep @ui",
+    "test:chromium": "bddgen && playwright test --project=chromium --grep @ui",
+    "test:firefox": "bddgen && playwright test --project=firefox --grep @ui",
+    "test:webkit": "bddgen && playwright test --project=webkit --grep @ui",
     "bddgen": "bddgen",
     "generate:codeowners": "node scripts/generate-codeowners.js",
     "report": "playwright show-report"

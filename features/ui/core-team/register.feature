@@ -1,4 +1,4 @@
-@auth
+@ui @auth
 Feature: User Registration — Test Case 1
 
   As a new visitor

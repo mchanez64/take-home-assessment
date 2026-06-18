@@ -66,13 +66,19 @@ $env:TEST_USER_NAME="Your Name"
 npm test
 ```
 
-### Run tests with the browser visible
+### Run API tests only (headless, Chromium)
+
+```bash
+npm run test:api
+```
+
+### Run UI tests with the browser visible
 
 ```bash
 npm run test:headed
 ```
 
-### Run tests for a specific browser
+### Run UI tests for a specific browser
 
 ```bash
 npm run test:chromium
@@ -80,17 +86,23 @@ npm run test:firefox
 npm run test:webkit
 ```
 
-### Run tests by team tag
+> `test:headed`, `test:chromium`, `test:firefox`, and `test:webkit` run **UI tests only** (`--grep @ui`).  
+> Use `npm test` to run the full suite (UI + API, all browsers).
+
+### Run tests by tag
 
 ```bash
-# Core team only
-npx playwright test --grep @core
-
-# User Journeys team only
-npx playwright test --grep @user-journeys
+# UI tests only
+npx bddgen && npx playwright test --grep @ui
 
 # API tests only
-npx playwright test --grep @api
+npx bddgen && npx playwright test --grep @api
+
+# Auth scenarios only (login + registration)
+npx bddgen && npx playwright test --grep @auth
+
+# Products scenarios only (search, cart, products API)
+npx bddgen && npx playwright test --grep @products
 ```
 
 ### Generate CODEOWNERS
@@ -218,16 +230,17 @@ features/{type}/{team}/*.feature  →  steps/{type}/{team}/*.steps.ts  →  page
 Written in plain Gherkin — readable by engineers, QA, and product owners alike:
 
 ```gherkin
-@core
+@ui @auth
 Feature: User Login
 
-  Scenario: Successful login with valid credentials
-    Given I am on the login page
+  Scenario: Login with correct email and password
+    Given I create a new account by API
+    And I navigate to the home page
     When I login with valid credentials
     Then I should be logged in successfully
 ```
 
-The `@core` tag links this scenario to the Core Team and allows targeted execution in CI.
+The `@ui` tag restricts this feature to the UI test suite; `@auth` allows targeted execution by domain (e.g. `--grep @auth`).
 
 ### 2. Step definitions
 

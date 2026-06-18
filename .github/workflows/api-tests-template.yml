@@ -40,7 +40,7 @@ jobs:
         run: npx bddgen
 
       - name: Run API tests
-        run: npx playwright test --project=chromium .features-gen/api/${{ inputs.team }}
+        run: npx playwright test --project=chromium .features-gen/features/api/${{ inputs.team }}
         env:
           CI: true
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
