@@ -14,6 +14,8 @@ export class HomePage extends BasePage {
   }
 
   async isVisible(): Promise<boolean> {
-    return this.slider.isVisible({ timeout: 5000 }).catch(() => false);
+    return this.slider.waitFor({ state: 'visible', timeout: 15000 })
+      .then(() => true)
+      .catch(() => false);
   }
 }
