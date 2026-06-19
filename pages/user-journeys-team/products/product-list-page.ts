@@ -27,8 +27,7 @@ export class ProductListPage extends BasePage {
 
   async searchFor(term: string): Promise<void> {
     await this.searchInput.fill(term);
-    await this.searchButton.click();
-    await this.waitForPageLoad();
+    await this.submitAndNavigate(this.searchButton);
   }
 
   async getProductCount(): Promise<number> {

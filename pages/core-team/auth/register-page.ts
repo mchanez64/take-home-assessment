@@ -63,8 +63,7 @@ export class RegisterPage extends BasePage {
 
   async submitRegistration(): Promise<void> {
     await this.dismissCookieConsent();
-    await this.createAccountButton.click();
-    await this.waitForPageLoad();
+    await this.submitAndNavigate(this.createAccountButton);
   }
 
   async isAccountCreated(): Promise<boolean> {

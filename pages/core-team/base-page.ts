@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export abstract class BasePage {
   protected readonly baseUrl = 'https://automationexercise.com';
@@ -11,6 +11,17 @@ export abstract class BasePage {
 
   async waitForPageLoad(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
+  }
+
+  // Use for form button submissions (POST) only — not plain link clicks.
+  // Regular link navigation is fast enough for waitForPageLoad; form submissions
+  // (POST + server round-trip) can start the navigation after waitForPageLoad
+  // already resolves in WebKit, causing a race condition.
+  protected async submitAndNavigate(locator: Locator): Promise<void> {
+    await Promise.all([
+      this.page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 15000 }),
+      locator.click(),
+    ]);
   }
 
   async dismissCookieConsent(): Promise<void> {

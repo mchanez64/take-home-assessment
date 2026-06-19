@@ -32,15 +32,13 @@ export class LoginPage extends BasePage {
   async login(email: string, password: string): Promise<void> {
     await this.loginEmailInput.fill(email);
     await this.loginPasswordInput.fill(password);
-    await this.loginButton.click();
-    await this.waitForPageLoad();
+    await this.submitAndNavigate(this.loginButton);
   }
 
   async startSignup(name: string, email: string): Promise<void> {
     await this.signupNameInput.fill(name);
     await this.signupEmailInput.fill(email);
-    await this.signupButton.click();
-    await this.waitForPageLoad();
+    await this.submitAndNavigate(this.signupButton);
   }
 
   async isLoginToYourAccountVisible(): Promise<boolean> {
