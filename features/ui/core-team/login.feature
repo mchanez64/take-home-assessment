@@ -6,7 +6,7 @@ Feature: User Login
   So that I can access my personalised experience
 
   # Test Case 2: Login User with correct email and password
-  Scenario: Login with correct email and password
+  Scenario: TC2 - Login with correct email and password
     Given I create a new account by API
     And I navigate to the home page
     And the home page is visible
@@ -18,7 +18,7 @@ Feature: User Login
     Then 'ACCOUNT DELETED!' is visible
 
   # Test Case 3: Login User with incorrect email and password
-  Scenario: Login with incorrect email and password
+  Scenario: TC3 - Login with incorrect email and password
     Given I navigate to the home page
     And the home page is visible
     When I click on Signup Login

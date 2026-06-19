@@ -28,11 +28,16 @@ For automationexercise.com, the focus is on the **API and E2E layers** because t
 
 Tests were selected to cover **key user journeys** with the highest business value and risk:
 
-| Area | Scenarios Selected | Rationale |
-|---|---|---|
-| Auth | Login (success + failure), Register | Core access path — if broken, nothing else works |
-| Products | Search, Add to cart | Primary shopping journey |
-| API | Product list, Brands list, Product search | Backend health, consumed by frontend |
+| Area | Test Case ID | Scenario | Rationale |
+|---|---|---|---|
+| Auth | TC1 | Register a new user account | Core access path — if broken, nothing else works |
+| Auth | TC2 | Login with correct email and password | Core access path — if broken, nothing else works |
+| Auth | TC3 | Login with incorrect email and password | Core access path — if broken, nothing else works |
+| Products | TC9 | Search for a product by keyword | Primary shopping journey |
+| Products | TC12 | Add two products to the cart and verify | Primary shopping journey |
+| API | APIT1 | Get all products returns a successful response | Backend health, consumed by frontend |
+| API | APIT2 | Get all brands returns a successful response | Backend health, consumed by frontend |
+| API | APIT3 | Search for a product via POST API | Backend health, consumed by frontend |
 
 Coverage is deliberately **not exhaustive** — the goal is to demonstrate a pattern that teams can extend, not to cover every edge case.
 

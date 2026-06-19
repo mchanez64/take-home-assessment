@@ -5,7 +5,7 @@ Feature: User Registration — Test Case 1
   I want to create an account
   So that I can shop and track my orders
 
-  Scenario: Register a new user account
+  Scenario: TC1 - Register a new user account
     Given I navigate to the home page
     And the home page is visible
     When I click on Signup Login

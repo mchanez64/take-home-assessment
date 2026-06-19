@@ -233,14 +233,14 @@ Written in plain Gherkin — readable by engineers, QA, and product owners alike
 @ui @auth
 Feature: User Login
 
-  Scenario: Login with correct email and password
+  Scenario: TC2 - Login with correct email and password
     Given I create a new account by API
     And I navigate to the home page
     When I login with valid credentials
     Then I should be logged in successfully
 ```
 
-The `@ui` tag restricts this feature to the UI test suite; `@auth` allows targeted execution by domain (e.g. `--grep @auth`).
+The `@ui` tag restricts this feature to the UI test suite; `@auth` allows targeted execution by domain (e.g. `--grep @auth`). The `TC2` prefix ties each scenario back to its automationexercise.com test case ID — useful in reports and when linking results to a test management tool.
 
 ### 2. Step definitions
 

@@ -6,7 +6,7 @@ Feature: Products — Search and Cart
   So that I can find and purchase what I need
 
   # Test Case 9: Search Product
-  Scenario: Search for a product by keyword
+  Scenario: TC9 - Search for a product by keyword
     Given I navigate to the home page
     And the home page is visible
     When I click on Products
@@ -16,7 +16,7 @@ Feature: Products — Search and Cart
     And I should see at least one product result
 
   # Test Case 12: Add Products in Cart
-  Scenario: Add two products to the cart and verify
+  Scenario: TC12 - Add two products to the cart and verify
     Given I navigate to the home page
     And the home page is visible
     When I click on Products
