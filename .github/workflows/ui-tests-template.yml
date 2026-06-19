@@ -50,7 +50,14 @@ jobs:
         run: npx bddgen
 
       - name: Run UI tests
-        run: npx playwright test --project=${{ inputs.browser }} .features-gen/features/ui/${{ inputs.team }}
+        run: |
+          if ! npx playwright test --project=${{ inputs.browser }} .features-gen/features/ui/${{ inputs.team }}; then
+            if npx playwright test --project=${{ inputs.browser }} .features-gen/features/ui/${{ inputs.team }} --list 2>&1 | grep -q "No tests found"; then
+              echo "No UI tests found for team '${{ inputs.team }}' on ${{ inputs.browser }} — skipping."
+            else
+              exit 1
+            fi
+          fi
         env:
           CI: true
           HEADED: ${{ inputs.headed }}

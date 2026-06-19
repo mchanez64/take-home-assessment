@@ -40,7 +40,14 @@ jobs:
         run: npx bddgen
 
       - name: Run API tests
-        run: npx playwright test --project=chromium .features-gen/features/api/${{ inputs.team }}
+        run: |
+          if ! npx playwright test --project=chromium .features-gen/features/api/${{ inputs.team }}; then
+            if npx playwright test --project=chromium .features-gen/features/api/${{ inputs.team }} --list 2>&1 | grep -q "No tests found"; then
+              echo "No API tests found for team '${{ inputs.team }}' — skipping."
+            else
+              exit 1
+            fi
+          fi
         env:
           CI: true
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
