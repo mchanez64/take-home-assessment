@@ -1,4 +1,4 @@
-name: Reusable — Run UI Tests
+name: Template — Run UI Tests
 
 on:
   workflow_call:

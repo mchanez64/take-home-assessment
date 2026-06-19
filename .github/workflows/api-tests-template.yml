@@ -1,4 +1,4 @@
-name: Reusable — Run API Tests
+name: Template — Run API Tests
 
 on:
   workflow_call:
