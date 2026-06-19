@@ -26,17 +26,21 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     trace: 'on-first-retry',
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-    launchOptions: {
-      args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
-    },
     viewport: { width: 1280, height: 720 },
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // Suppress Chromium's automation banner and disable sandboxing in CI.
+        // These flags are Chromium-only and must not be applied to Firefox or WebKit.
+        userAgent:
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+        launchOptions: {
+          args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
+        },
+      },
     },
     {
       name: 'firefox',

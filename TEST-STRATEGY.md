@@ -137,6 +137,8 @@ The naming convention `{team}-{type}-tests.yml` mirrors the folder structure. Wh
 - **UI tests:** All three engines (Chromium, Firefox, WebKit) run in parallel via matrix strategy
 - **API tests:** Chromium only — API tests don't render a UI, so multiple browsers add no value
 - `fail-fast: false` ensures one browser failure doesn't cancel the others
+- **Chromium-specific launch flags** (`--disable-blink-features=AutomationControlled`, `--no-sandbox`) and a spoofed Chrome `userAgent` are scoped to the Chromium project block only. `--disable-blink-features=AutomationControlled` suppresses `navigator.webdriver = true` to avoid bot-detection; `--no-sandbox` is required when Chromium runs as root inside a CI container. WebKit and Firefox reject Blink-specific flags at launch, crashing the runner if they are applied globally.
+- **Graceful "no tests found" handling:** both `ui-tests-template.yml` and `api-tests-template.yml` re-run with `--list` on a non-zero exit to distinguish "no tests found" (skip the step cleanly) from a real test failure (propagate the exit code). This allows new teams to add a workflow before they have written any tests, without breaking the pipeline.
 
 ### Secrets Management
 Sensitive credentials (`TEST_USER_EMAIL`, `TEST_USER_PASSWORD`) are stored as GitHub repository secrets and injected at runtime. They never appear in the codebase or logs.
@@ -329,6 +331,8 @@ production  → smoke tests only, post-deploy, non-destructive
 | Network latency | `waitUntil: 'domcontentloaded'` instead of `networkidle` where possible |
 | Third-party ads / overlays | `Before` hook: network-blocks the consent CDN and injects a CSS rule that hides `.fc-consent-root` before any page script runs |
 | Environment instability | Retries in CI (`retries: 2`); retries should not mask real failures |
+| Slow CI page render | `waitFor({ state: 'visible', timeout: 15000 })` rather than `isVisible({ timeout })` — actively polls until the element transitions to visible, giving JS-rendered components (e.g. Bootstrap carousel) enough time to initialise on slower CI runners |
+| WebKit form submission race | `BasePage.submitAndNavigate()` wraps form button clicks in `Promise.all([waitForNavigation, click])` — the navigation listener is registered before the click fires, so WebKit cannot advance past the form before the POST response arrives. Plain link clicks are unaffected (WebKit starts those fast enough for the existing `waitForPageLoad` pattern) |
 
 **Flaky test policy:**
 1. Flaky tests are tagged `@flaky` and excluded from the main pipeline: `--grep-invert @flaky`
